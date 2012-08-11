@@ -8,6 +8,7 @@ You need to have Proj.4 already installed as a shared library.
 Example transformations (from
 [http://www.mysqludf.org/lib_mysqludf_fPROJ4/](http://www.mysqludf.org/lib_mysqludf_fPROJ4/)):
 
+```haskell
 	import Geo.Proj4
 	
 	main :: IO ()
@@ -32,6 +33,14 @@ Example transformations (from
 		pj_free pj0
 		pj_free pj
 		return ()
+```
+
+You should the following when you compile and run the above:
+
+	(x, y): (615096.1096381239,4437953.6592040695)
+	(lon, lat): (0.3900810878207442,0.6995977773693998)
+	(x, y, z): (615096.1096381239,4437953.6592040695,2843.0)
+
 
 GPL license,
 (C) Pavel M. Penev, 2012
