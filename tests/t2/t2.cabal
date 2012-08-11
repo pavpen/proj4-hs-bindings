@@ -1,0 +1,12 @@
+Name:		t2
+Version:	0.0
+Description:	Playground for binding Haskell functions to the Proj4 C dynamic
+                library.
+License:	GPL
+Build-Type:	Simple
+Cabal-Version:	>= 1.2
+
+Executable t2
+  Main-is:		t2.hs
+  Build-Depends:	base, proj4-hs-bindings
+  Extra-Libraries:	proj

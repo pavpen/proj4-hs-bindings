@@ -1,0 +1,20 @@
+Name:		proj4-hs-bindings
+Version:	0.0
+Stability:	experimental
+Description:	Playground for binding Haskell functions to the Proj4 C dynamic
+                library.
+License:	GPL
+Build-Type:	Simple
+Cabal-Version:	>= 1.2
+
+Author:		Pavel M. Penev <pavpen@gmail.com>
+License:	GPL
+Category:	Data
+
+Library
+  Hs-Source-Dirs:	src
+  C-Sources:		src/c/c_proj4.c
+  Include-Dirs:		include
+  Extra-Libraries:	proj
+  Exposed-Modules:	Geo.Proj4
+  Build-Depends:	base, ghc-prim
