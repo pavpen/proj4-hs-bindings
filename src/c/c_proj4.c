@@ -65,3 +65,16 @@ CprojXYZ* c_pj_transform_pt
 #  endif
 	return res;
 }
+
+
+
+#ifdef _DEBUG
+
+void c_pj_free(projPJ proj)
+{
+
+	printf("Entered c_pj_free(%p).\n", proj);
+	pj_free(proj);
+}
+
+#endif /* DEBUG */

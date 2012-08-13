@@ -16,5 +16,5 @@ Library
   C-Sources:		src/c/c_proj4.c
   Include-Dirs:		include
   Extra-Libraries:	proj
-  Exposed-Modules:	Geo.Proj4
+  Exposed-Modules:	Geo.Proj4, Geo.Proj4.Internal
   Build-Depends:	base, ghc-prim

@@ -1,4 +1,4 @@
-import Geo.Proj4
+import Geo.Proj4.Internal
 
 main :: IO ()
 main = do
