@@ -5,7 +5,7 @@ module Geo.Proj4
 	, pjTransformPt
 	) where
 
-import Foreign		(newForeignPtr)
+import Foreign		(ForeignPtr (..), newForeignPtr, withForeignPtr)
 import System.IO.Unsafe	(unsafePerformIO)
 
 import Geo.Proj4.Internal
@@ -16,12 +16,16 @@ import Geo.Proj4.Internal
 newProjection spec = unsafePerformIO $ do
 	res <- pj_init_plus spec
 	newForeignPtr p_c_pj_free res
-	return res
 
-pjFwd = pj_fwd
+pjFwd pj coord = unsafePerformIO $ withForeignPtr pj $ \pjPtr ->
+	pj_fwd_io coord pjPtr
 
-pjInv = pj_inv
+pjInv pj coord = unsafePerformIO $ withForeignPtr pj $ \pjPtr ->
+	pj_inv_io coord pjPtr
 
-pjTransformPt :: OCIprojPJHdl -> OCIprojPJHdl -> (Double, Double, Double) ->
-	(Double, Double, Double)
-pjTransformPt = pj_transform_pt
+pjTransformPt :: ForeignPtr OCIprojPJ -> ForeignPtr OCIprojPJ ->
+	(Double, Double, Double) -> (Double, Double, Double)
+pjTransformPt srcPj dstPj coord = unsafePerformIO $
+	withForeignPtr srcPj $ \srcPjPtr ->
+	withForeignPtr dstPj $ \dstPjPtr ->
+	  pj_transform_pt_io srcPjPtr dstPjPtr coord

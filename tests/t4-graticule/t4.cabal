@@ -1,0 +1,13 @@
+Name:		t4
+Version:	0.0
+Description:	Generate a map's graticule grid in a given Proj.4 projection
+                using the diagrams library.
+License:	GPL
+Build-Type:	Simple
+Cabal-Version:	>= 1.2
+
+Executable t4
+  Main-is:		t4.hs
+  Build-Depends:	base, proj4-hs-bindings, diagrams-lib >= 0.5.0.1,
+                        diagrams-svg >= 0.3.7
+  Extra-Libraries:	proj

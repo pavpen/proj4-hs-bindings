@@ -22,10 +22,10 @@ pj = newProjection "+proj=utm +zone=34"
 pj0 = newProjection "+proj=latlong +ellps=clrk66"
 
 -- | A projection of our test longitude & latitude, using @pj:
-(x, y) = pjFwd (lon0, lat0) pj
+(x, y) = pjFwd pj (lon0, lat0)
 
 -- | An inverse projection from (x, y) to (longitude, latitude):
-(lon, lat) = pjInv (x, y) pj
+(lon, lat) = pjInv pj (x, y)
 
 -- | Convert our test position from one projection to another (pj0 -> pj):
 (x2, y2, z2) = pjTransformPt pj0 pj (lon0, lat0, alt0)
@@ -38,7 +38,7 @@ main = do
 	return ()
 ```
 
-You should the following when you compile and run the above:
+You should see the following when you compile and run the above:
 
 	(x, y): (615096.1096381239,4437953.6592040695)
 	(lon, lat): (22.350000000000662,40.083999999999584)

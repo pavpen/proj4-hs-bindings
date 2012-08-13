@@ -1,5 +1,7 @@
 #include <proj_api.h>
 
+#undef _DEBUG
+
 
 typedef struct {
 	double x;
@@ -22,4 +24,8 @@ CprojXYZ* c_pj_transform_pt
 
 void c_pj_free(projPJ proj);
 
-#endif /* DEBUG */
+#else /* _DEBUG */
+
+#  define c_pj_free	pj_free
+
+#endif /* _DEBUG */
