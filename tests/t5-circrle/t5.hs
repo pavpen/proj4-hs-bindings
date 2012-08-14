@@ -13,6 +13,11 @@ pj = newProjection "+proj=vandg +datum=WGS84"
 pj0 = newProjection "+proj=latlong +ellps=clrk66"
 
 
+scalePair factor (x,y) = (x * factor, y * factor)
+
+degrees' = scalePair (180 / pi)
+
+
 datum = wgs84
 cScaleX = 0.00001
 cScaleY = cScaleX
@@ -20,6 +25,9 @@ lonEps = 10 * pi / 180
 lonStep = 10 * pi / 180
 latEps = 10 * pi / 180
 latStep = 10 * pi / 180
+
+projLonLat (lon, lat) = let (x, y) = pjFwd pj (lon, lat)
+  			in (x * cScaleX, y * cScaleY)
 
 lons =	[-pi + lonEps] ++
 	[-pi + lonStep, -pi + (2*lonStep) .. pi - lonStep] ++
@@ -36,8 +44,7 @@ lonLine pj latStep lon =
 
 latLine pj lonStep lat =
 	cubicSpline False $ map procsLon lons
-  where procsLon lon = p2 $ (let (x, y) = pjFwd pj (lon, lat)
-  			     in (x * cScaleX, y * cScaleY))
+  where procsLon lon = p2 $ projLonLat (lon, lat)
 
 lonLines pj = mconcat $ map procsLon lons 
   where procsLon lon = lonLine pj latStep lon
@@ -46,16 +53,36 @@ latLines pj = mconcat $ map procsLat lats
   where procsLat lat = latLine pj lonStep lat
 
 graticules =
-	lonLines pj # lw 1 # lc red `atop`
+	lonLines pj # lw 1 # lc gray `atop`
 	latLines pj # lw 1 # lc green
 
-mapCirc ctr radius bearingStep =
-	cubicSpline True $ map procsBrg [0, bearingStep .. 360]
-  where procsBrg b = let (lonLat, _) = Geo.direct datum ctr b radius
-  			 (x, y) = pjFwd pj $ Geo.radians' lonLat
-  		     in p2 $ (x * cScaleX, y * cScaleY)
+lonLatCirc ctr radius bearingStep = map procsBrg [0, bearingStep .. 360]
+  where procsBrg b =
+	  let (lat, lon) = Geo.radians' $ fst $ Geo.direct datum ctr b radius
+	  in (lon, lat)
 
-dgm = 	mapCirc (40 !.! 40) 1000000 (pi/5) # lw 1 # lc blue `atop`
+mapCirc ctr radius bearingStep = cubicSpline True $
+		map (p2 . projLonLat) $ lonLatCirc ctr radius bearingStep
+
+lonLatSphCirc ctr rho rotStep = map coords [0, rotStep .. 2*pi]
+  where (cLat, cLon) = Geo.radians' ctr
+	sin_dLat rotAng = (sin rho) * (sin rotAng)
+	sin_dLon rotAng lat = (sin rho) * (cos rotAng) / (cos lat)
+	coords rotAng = let lat = cLat + (asin $ sin_dLat rotAng)
+			    lon = cLon + (asin $ sin_dLon rotAng lat)
+			in (lon, lat)
+
+sphCirc ctr rho rotStep =
+	cubicSpline True $ map (p2 . projLonLat) $ lonLatSphCirc ctr rho rotStep
+
+
+dgm = 	mapCirc (70 !.! 90) 1000000 45 # lw 1 # lc blue `atop`
+	sphCirc (70 !.! 90) (10 * pi / 180) (pi / 4) # lw 1 # lc red `atop`
 	graticules
 
-main = defaultMain (pad 1.1 dgm)
+main = do
+	putStrLn $ show $ map (scalePair (180/pi)) $
+		lonLatCirc (80 !.! 40) 1000000 45
+	putStrLn $ show $ map (scalePair (180/pi)) $
+		lonLatSphCirc (0 !.! 0) (10 * pi / 180) (pi / 3)
+	defaultMain (pad 1.1 dgm)
