@@ -1,5 +1,5 @@
 Name:		proj4-hs-bindings
-Version:	0.0
+Version:	0.1
 Stability:	experimental
 Description:	Playground for binding Haskell functions to the Proj4 C dynamic
                 library.
