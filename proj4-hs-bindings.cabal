@@ -94,7 +94,7 @@ Category: Data
 
 Library
   Hs-Source-Dirs: src
-  C-Sources: src/c/c_proj4.c, include/c_proj4.h
+  C-Sources: src/c/c_proj4.c
   Include-Dirs: include
   Extra-Libraries: proj
   Exposed-Modules: Geo.Proj4, Geo.Proj4.Internal
