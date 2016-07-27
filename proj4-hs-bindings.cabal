@@ -4,6 +4,7 @@ Stability: experimental
 License: GPL
 Build-Type: Simple
 Cabal-Version: >= 1.2
+Homepage: https://github.com/pavpen/proj4-hs-bindings
 Synopsis: Haskell bindings for the Proj4 C dynamic library.
 --  Haskell bindings for the Proj.4 map projection C library.
 --  .
@@ -99,3 +100,7 @@ Library
   Extra-Libraries: proj
   Exposed-Modules: Geo.Proj4, Geo.Proj4.Internal
   Build-Depends: base < 5, ghc-prim
+
+source-repository head
+  type: git
+  location: git://github.com/pavpen/proj4-hs-bindings.git
