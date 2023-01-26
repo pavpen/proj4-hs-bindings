@@ -45,5 +45,5 @@ You should see the following when you compile and run the above:
 	(x, y, z): (615096.1096381239,4437953.6592040695,2843.0)
 
 
-GPL license,
+BSD-3 license,
 (C) Pavel M. Penev, 2012
